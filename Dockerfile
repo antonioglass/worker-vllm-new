@@ -1,8 +1,8 @@
 # Base image - Set default to CUDA 11.8
-ARG WORKER_CUDA_VERSION=11.8
+ARG WORKER_CUDA_VERSION=12.1
 FROM runpod/base:0.4.2-cuda${WORKER_CUDA_VERSION}.0 as builder
 
-ARG WORKER_CUDA_VERSION=11.8 # Required duplicate to keep in scope
+ARG WORKER_CUDA_VERSION=12.1 # Required duplicate to keep in scope
 
 # Set Environment Variables
 ENV WORKER_CUDA_VERSION=${WORKER_CUDA_VERSION} \
@@ -24,7 +24,7 @@ RUN if [[ "${WORKER_CUDA_VERSION}" == 11.8* ]]; then \
         python3.11 -m pip install -U --force-reinstall torch==2.1.2 xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118; \
         python3.11 -m pip install -e git+https://github.com/runpod/vllm-fork-for-sls-worker.git@cuda-11.8#egg=vllm; \
     else \
-        python3.11 -m pip install -e git+https://github.com/runpod/vllm-fork-for-sls-worker.git#egg=vllm; \
+        python3.11 -m pip install -e git+https://github.com/antonioglass/vllm-fork-for-sls-worker.git#egg=vllm; \
     fi && \
     rm -rf /root/.cache/pip
 
@@ -38,8 +38,7 @@ ARG HF_TOKEN=""
 ARG QUANTIZATION=""
 RUN if [ -n "$MODEL_NAME" ]; then \
         export MODEL_BASE_PATH=$MODEL_BASE_PATH && \
-        export MODEL_NAME=$MODEL_NAME && \
-        python3.11 /download_model.py --model $MODEL_NAME; \
+        export MODEL_NAME=$MODEL_NAME; \
     fi && \
     if [ -n "$QUANTIZATION" ]; then \
         export QUANTIZATION=$QUANTIZATION; \
