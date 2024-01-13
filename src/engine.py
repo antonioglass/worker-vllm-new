@@ -45,7 +45,7 @@ class VLLMEngine:
             "dtype": "auto" if os.getenv("QUANTIZATION") is None else "half",
             "disable_log_stats": bool(int(os.getenv("DISABLE_LOG_STATS", 1))),
             "disable_log_requests": bool(int(os.getenv("DISABLE_LOG_REQUESTS", 1))),
-            "gpu_memory_utilization": float(os.getenv("GPU_MEMORY_UTILIZATION", 0.98)),
+            "gpu_memory_utilization": float(os.getenv("GPU_MEMORY_UTILIZATION", 0.90)),
             "tensor_parallel_size": self._get_num_gpu_shard(),
         }
 
